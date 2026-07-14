@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Audit Logs
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold">Audit Logs</h2>
+            <p class="text-muted">
+                Monitor all AI actions and system activities.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-3 mb-4 audit-summary">
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center p-3">
+                <h6 class="text-muted">Total Logs</h6>
+                <h3 class="text-primary">1,284</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center p-3">
+                <h6 class="text-muted">Successful</h6>
+                <h3 class="text-success">1,250</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center p-3">
+                <h6 class="text-muted">Failed</h6>
+                <h3 class="text-danger">34</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center p-3">
+                <h6 class="text-muted">Today's Activity</h6>
+                <h3 class="text-warning">48</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Search + Filter -->
+
+    <div class="card shadow-sm border-0 mb-4" audit-search>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-8">
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Search Prompt, User or Tool...">
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <select class="form-select">
+
+                        <option>All Tools</option>
+                        <option>LLM</option>
+                        <option>SQL Tool</option>
+                        <option>Gmail API</option>
+                        <option>Google Calendar</option>
+                        <option>Tavily Search</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Audit Table -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>Time</th>
+                        <th>User</th>
+                        <th>Prompt</th>
+                        <th>Tool Used</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>09:15 AM</td>
+
+                        <td>Turvi</td>
+
+                        <td>
+                            Notify Platinum customers about shipment delay.
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-primary">
+
+                                LLM
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-success">
+
+                                Success
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>09:18 AM</td>
+
+                        <td>Turvi</td>
+
+                        <td>
+
+                            Find customers in Maharashtra.
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-info text-dark">
+
+                                SQL Tool
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-success">
+
+                                Success
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>09:21 AM</td>
+
+                        <td>Turvi</td>
+
+                        <td>
+
+                            Schedule review meeting.
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-warning text-dark">
+
+                                Google Calendar
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-success">
+
+                                Success
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>09:30 AM</td>
+
+                        <td>Admin</td>
+
+                        <td>
+
+                            Send invoice reminder emails.
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-danger">
+
+                                Gmail API
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-danger">
+
+                                Failed
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- Pagination -->
+
+    <nav class="mt-4">
+
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    Previous
+                </a>
+            </li>
+
+            <li class="page-item active">
+                <a class="page-link" href="#">
+                    1
+                </a>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    2
+                </a>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    Next
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+</div>
+
+{% endblock %}

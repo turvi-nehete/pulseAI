@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Meetings
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- Heading -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold">
+                Meeting Management
+            </h2>
+
+            <p class="text-muted">
+                Schedule and manage client meetings.
+            </p>
+
+        </div>
+
+        <button class="btn btn-primary">
+
+            + Schedule Meeting
+
+        </button>
+
+    </div>
+
+    <!-- Calendar + Upcoming Meetings -->
+
+    <div class="row">
+
+        <!-- Calendar -->
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-white">
+
+                    <h5 class="mb-0">
+
+                        Meeting Calendar
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div id="meetingCalendar"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Upcoming Meetings -->
+
+        <div class="col-lg-4">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-white">
+
+                    <h5 class="mb-0">
+
+                        Upcoming Meetings
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="meeting-card">
+
+                        <h6>Regional Sales Review</h6>
+
+                        <small class="text-muted">
+
+                            9 Jul 2026 • 3:00 PM
+
+                        </small>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="meeting-card">
+
+                        <h6>Distributor Follow-up</h6>
+
+                        <small class="text-muted">
+
+                            10 Jul 2026 • 11:00 AM
+
+                        </small>
+
+                    </div>
+
+                    <hr>
+
+                    <div>
+
+                        <h6>Marketing Strategy</h6>
+
+                        <small class="text-muted">
+
+                            11 Jul 2026 • 2:30 PM
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Meeting Details -->
+
+    <div class="card shadow-sm border-0 mt-5">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+
+                Meeting Details
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-hover">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Meeting</th>
+
+                        <th>Date</th>
+
+                        <th>Time</th>
+
+                        <th>Participants</th>
+
+                        <th>Status</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>Regional Sales Review</td>
+
+                        <td>09 Jul 2026</td>
+
+                        <td>3:00 PM</td>
+
+                        <td>12</td>
+
+                        <td>
+
+                            <span class="badge bg-success">
+
+                                Scheduled
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button class="btn btn-sm btn-outline-primary">
+
+                                View
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Distributor Follow-up</td>
+
+                        <td>10 Jul 2026</td>
+
+                        <td>11:00 AM</td>
+
+                        <td>8</td>
+
+                        <td>
+
+                            <span class="badge bg-warning text-dark">
+
+                                Pending
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button class="btn btn-sm btn-outline-primary">
+
+                                View
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

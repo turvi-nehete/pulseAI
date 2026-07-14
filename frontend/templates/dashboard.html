@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+
+
+    <!-- Welcome Section -->
+    <div class="dashboard-header">
+        <h2 class="fw-bold" id="greeting"></h2>
+        <p class="text-muted">
+            Welcome back to PharmaComm AI. Here's a quick overview of today's activity.
+        </p>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center p-3 stats-card">
+                <h6 class="text-muted">Emails Sent</h6>
+                <h2 class="counter" data-target="152">0</h2>
+                <small class="text-success">+12 Today</small>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center p-3 stats-card">
+                <h6 class="text-muted">Meetings</h6>
+                <h2 class="counter" data-target="152">0</h2>
+                <small class="text-success">Today's Schedule</small>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center p-3 stats-card">
+                <h6 class="text-muted">Campaigns</h6>
+                <h2 class="counter" data-target="152">0</h2>
+                <small class="text-warning">3 Running</small>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center p-3 stats-card">
+                <h6 class="text-muted">Pending Approval</h6>
+                <h2 class="counter" data-target="152">0</h2>
+                <small>Needs Attention</small>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Calendar + Meetings -->
+    <div class="row mt-5">
+
+        <!-- Calendar -->
+        <div class="col-lg-7">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Calendar</h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div id="calendar"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Meetings -->
+        <div class="col-lg-5">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Upcoming Meetings</h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="meeting-item">
+
+                        <h6>Regional Sales Review</h6>
+
+                        <small class="text-muted">
+                            Today • 3:00 PM
+                        </small>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="meeting-item">
+
+                        <h6>Distributor Follow-up</h6>
+
+                        <small class="text-muted">
+                            Tomorrow • 11:00 AM
+                        </small>
+
+                    </div>
+
+                    <hr>
+
+                    
+                    <div class="meeting-item">
+
+                        <h6>Marketing Strategy</h6>
+
+                        <small class="text-muted">
+                            Friday • 2:30 PM
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Recent Activity + AI Insight -->
+    <div class="row mt-5">
+
+        <!-- Recent Activity -->
+
+        <div class="col-lg-7">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Recent Activity</h5>
+                </div>
+
+                <div class="card-body">
+
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item">
+                            Shipment Delay email generated
+                        </li>
+
+                        <li class="list-group-item">
+                            Festive Campaign approved
+                        </li>
+
+                        <li class="list-group-item">
+                            Meeting scheduled with distributors
+                        </li>
+
+                        <li class="list-group-item">
+                            AI selected 42 Platinum customers
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- AI Insight -->
+
+        <div class="col-lg-5">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">AI Insights</h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="alert alert-info">
+
+                        <strong>Recommendation</strong>
+
+                        <br><br>
+
+                        5 Platinum customers haven't replied in
+                        the last 5 days.
+
+                        <hr>
+
+                        Suggested Action:
+
+                        Send a follow-up email.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Quick Actions -->
+
+    <div class="mt-5 quick-actions">
+
+        <h4 class="mb-3">
+            Quick Actions
+        </h4>
+
+        <div class="d-flex gap-3 flex-wrap">
+
+            <button class="btn quick-action-btn">
+                Generate Email
+            </button>
+
+            <button class="btn quick-action-btn">
+                Schedule Meeting
+            </button>
+
+            <button class="btn quick-action-btn">
+                Create Campaign
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+{% endblock %}

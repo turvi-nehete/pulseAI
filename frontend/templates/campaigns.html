@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Campaigns
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4 page-title">
+
+        <div>
+            <h2 class="fw-bold">Campaign Management</h2>
+            <p class="text-muted">
+                Create and manage all communication campaigns.
+            </p>
+        </div>
+
+        <button class="btn btn-primary">
+            + Create Campaign
+        </button>
+
+    </div>
+
+    <!-- Search + Filter -->
+
+    <div class="card shadow-sm border-0 mb-4 search-box">
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-8">
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Search Campaign...">
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <select class="form-select">
+
+                        <option>All Status</option>
+                        <option>Running</option>
+                        <option>Completed</option>
+                        <option>Draft</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Campaign Table -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>Campaign</th>
+                        <th>Status</th>
+                        <th>Recipients</th>
+                        <th>Created By</th>
+                        <th>Created On</th>
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>Festive Discount Offer</td>
+
+                        <td>
+                            <span class="badge bg-success">
+                                Running
+                            </span>
+                        </td>
+
+                        <td>250</td>
+
+                        <td>Turvi</td>
+
+                        <td>09 Jul 2026</td>
+
+                        <td>
+
+                            <button class="btn btn-sm btn-outline-info">
+                                View
+                            </button>
+
+                            <button class="btn btn-sm btn-outline-primary">
+                                Edit
+                            </button>
+
+                            <button class="btn btn-sm btn-outline-danger">
+                                Delete
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Shipment Delay Notification</td>
+
+                        <td>
+
+                            <span class="badge bg-secondary">
+                                Completed
+                            </span>
+
+                        </td>
+
+                        <td>180</td>
+
+                        <td>Admin</td>
+
+                        <td>07 Jul 2026</td>
+
+                        <td>
+
+                            <button class="btn btn-sm btn-outline-info">
+                                View
+                            </button>
+
+                            <button class="btn btn-sm btn-outline-primary">
+                                Edit
+                            </button>
+
+                            <button class="btn btn-sm btn-outline-danger">
+                                Delete
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Invoice Reminder</td>
+
+                        <td>
+
+                            <span class="badge bg-warning text-dark">
+                                Draft
+                            </span>
+
+                        </td>
+
+                        <td>95</td>
+
+                        <td>Manager</td>
+
+                        <td>05 Jul 2026</td>
+
+                        <td>
+
+                            <button class="btn btn-sm btn-outline-info">
+                                View
+                            </button>
+
+                            <button class="btn btn-sm btn-outline-primary">
+                                Edit
+                            </button>
+
+                            <button class="btn btn-sm btn-outline-danger">
+                                Delete
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- Pagination -->
+
+    <nav class="mt-4">
+
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    Previous
+                </a>
+            </li>
+
+            <li class="page-item active">
+                <a class="page-link" href="#">
+                    1
+                </a>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    2
+                </a>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    Next
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+</div>
+
+{% endblock %}
