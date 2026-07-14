@@ -21,14 +21,15 @@ urlpatterns = [
     path("clients/", client_views.clients,name="clients"),
     path("clients/edit/<int:cid>/",client_views.edit_client,name="edit_client"),
     path("clients/delete/<int:cid>/",client_views.delete_client,name="delete_client",),
+
     # Gmail
     path("gmail/connect/", gmail_views.connect_gmail),
     path("gmail/callback/", gmail_views.gmail_callback),
     path("gmail/send/", gmail_views.send_email),
 
     # AI
-    path("chat/", ai_views.chat),
-    path("generate-email/", ai_views.generate_email),
+    path("ai_chat/", ai_views.chat,name="ai_chat"),
+    # path("generate-email/", ai_views.generate_email),
 
     # Campaign
     path("campaign/create/", campaign_views.create_campaign),
@@ -45,7 +46,7 @@ urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),
     # path("clients/", views.clients, name="clients"),
     path("campaigns/", views.campaigns, name="campaigns"), 
-    path("ai_chat/",views.ai_chat,name="ai_chat"),
+    #path("ai_chat/",views.ai_chat,name="ai_chat"),
     path("meetings/",views.meetings,name="meetings"),
     path("audit/",views.audit,name="audit"),
     path("templates/",views.templates,name="templates"),

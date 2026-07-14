@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 AI Assistant
@@ -6,521 +7,292 @@ AI Assistant
 
 {% block content %}
 
+
 <div class="container mt-4">
 
     <!-- Heading -->
-
     <div class="text-center mb-5">
-
-        <h2 class="fw-bold">
-            AI Communication Assistant
-        </h2>
-
-        <p class="text-muted">
-            Describe what you want AI to do.
-        </p>
-
+        <h2 class="fw-bold">AI Communication Assistant</h2>
+        <p class="text-muted">Describe what you want AI to do.</p>
     </div>
 
     <!-- Prompt Card -->
-
     <div class="card shadow-sm border-0 mb-4">
-
         <div class="card-body">
 
-            <!-- Recipient Filters -->
-
             <!-- ================= TARGET AUDIENCE ================= -->
+            <h5 class="mb-3">Target Audience</h5>
 
-<h5 class="mb-3">
-    Target Audience
-</h5>
+            <div class="mb-4">
+                <label class="form-label fw-semibold" for="audienceMethod">Select Audience Method</label>
+                <select class="form-select" id="audienceMethod" name="audience_method">
+                    <option value="smart" selected>Smart Filters</option>
+                    <option value="manual">Manual Client Selection</option>
+                </select>
+            </div>
 
-<div class="mb-4">
+            <!-- SMART FILTERS -->
+            <div class="card border-0 bg-light mb-4" id="smartFiltersSection">
+                <div class="card-body">
+                    <h6 class="fw-bold mb-3">Smart Filters</h6>
 
-    <label class="form-label fw-semibold">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="customerType">Customer Category</label>
+                            <select class="form-select" id="customerType" name="customer_type">
+                                <option value="all">All</option>
+                                {% for value, label in customer_types %}
+                                <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-        Select Audience Method
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="companyType">Company Type</label>
+                            <select class="form-select" id="companyType" name="company_type">
+                                <option value="all">All</option>
+                                {% for value, label in company_types %}
+                                <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-    </label>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="campaignType">Campaign Type</label>
+                            <select class="form-select" id="campaignType" name="campaign_type">
+                                <option value="email">Email</option>
+                                <option value="meeting">Meeting</option>
+                                <option value="email_meeting">Email + Meeting</option>
+                                <option value="reminder">Reminder</option>
+                            </select>
+                        </div>
+                    </div>
 
-    <select class="form-select">
+                    <details>
+                        <summary class="fw-semibold mb-3">Advanced Audience Filters</summary>
+                        <div class="row mt-3">
+                            <div class="col-md-3">
+                                <label class="form-label" for="state">State</label>
+                                <select class="form-select" id="state" name="state">
+                                    <option value="all">All</option>
+                                    {% for state in states %}
+                                    <option value="{{ state }}">{{ state }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="city">City</label>
+                                <select class="form-select" id="city" name="city">
+                                    <option value="all">All</option>
+                                    {% for city in cities %}
+                                    <option value="{{ city }}">{{ city }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="country">Country</label>
+                                <select class="form-select" id="country" name="country">
+                                    {% for country in countries %}
+                                    <option value="{{ country }}">{{ country }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="status">Status</label>
+                                <select class="form-select" id="status" name="status">
+                                    <option value="all">All</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
 
-        <option selected>
-            Smart Filters
-        </option>
-
-        <option>
-            Manual Client Selection
-        </option>
-
-        <option>
-            AI Selection
-        </option>
-
-    </select>
-
-</div>
-
-<!-- SMART FILTERS -->
-
-<div class="card border-0 bg-light mb-4">
-
+            <!-- MANUAL CLIENT SELECTION -->
+<div class="card border-0 bg-light mb-4" id="manualSelectionSection" style="display:none;">
     <div class="card-body">
 
-        <h6 class="fw-bold mb-3">
-
-            Smart Filters
-
-        </h6>
-
-        <div class="row">
-
-            <div class="col-md-4 mb-3">
-
-                <label class="form-label">
-
-                    Customer Category
-
-                </label>
-
-                <select class="form-select">
-
-                    <option>All</option>
-                    <option>Platinum</option>
-                    <option>Gold</option>
-                    <option>Silver</option>
-
-                </select>
-
-            </div>
-
-            <div class="col-md-4 mb-3">
-
-                <label class="form-label">
-
-                    Company Type
-
-                </label>
-
-                <select class="form-select">
-
-                    <option>All</option>
-                    <option>Distributor</option>
-                    <option>Hospital</option>
-                    <option>Retail</option>
-
-                </select>
-
-            </div>
-
-            <div class="col-md-4 mb-3">
-
-                <label class="form-label">
-
-                    Campaign Type
-
-                </label>
-
-                <select class="form-select">
-
-                    <option>Email</option>
-                    <option>Meeting</option>
-                    <option>Email + Meeting</option>
-                    <option>Reminder</option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-        <details>
-
-            <summary class="fw-semibold mb-3">
-
-                Advanced Audience Filters
-
-            </summary>
-
-            <div class="row mt-3">
-
-                <div class="col-md-3">
-
-                    <label class="form-label">
-
-                        State
-
-                    </label>
-
-                    <select class="form-select">
-
-                        <option>All</option>
-
-                        <option>Maharashtra</option>
-
-                        <option>Gujarat</option>
-
-                    </select>
-
-                </div>
-
-                <div class="col-md-3">
-
-                    <label class="form-label">
-
-                        City
-
-                    </label>
-
-                    <select class="form-select">
-
-                        <option>All</option>
-
-                        <option>Mumbai</option>
-
-                        <option>Pune</option>
-
-                    </select>
-
-                </div>
-
-                <div class="col-md-3">
-
-                    <label class="form-label">
-
-                        Country
-
-                    </label>
-
-                    <select class="form-select">
-
-                        <option>India</option>
-
-                    </select>
-
-                </div>
-
-                <div class="col-md-3">
-
-                    <label class="form-label">
-
-                        Status
-
-                    </label>
-
-                    <select class="form-select">
-
-                        <option>All</option>
-
-                        <option>Active</option>
-
-                        <option>Inactive</option>
-
-                    </select>
-
-                </div>
-
-            </div>
-
-        </details>
-
-    </div>
-
-</div>
-
-<!-- MANUAL CLIENT SELECTION -->
-
-<div class="card border-0 bg-light mb-4">
-
-    <div class="card-body">
-
-        <h6 class="fw-bold">
-
-            Manual Client Selection
-
-        </h6>
+        <h6 class="fw-bold">Manual Client Selection</h6>
 
         <input
             type="text"
             class="form-control mb-3"
+            id="clientSearch"
+            name="client_search"
             placeholder="Search Client...">
 
-        <div class="form-check">
+        <div id="clientList">
 
-            <input class="form-check-input" type="checkbox">
+            {% for client in clients %}
 
-            <label class="form-check-label">
+            <div class="form-check mb-2">
 
-                Apollo Hospital
+                <input
+                    class="form-check-input client-checkbox"
+                    type="checkbox"
+                    id="client{{ client.cid }}"
+                    name="selected_clients"
+                    value="{{ client.cid }}">
 
-            </label>
+                <label
+                    class="form-check-label"
+                    for="client{{ client.cid }}">
 
-        </div>
+                    <strong>{{ client.comp_name }}</strong><br>
 
-        <div class="form-check">
+                    <small class="text-muted">
+                        {{ client.contactname }} | {{ client.c_mail }}
+                    </small>
 
-            <input class="form-check-input" type="checkbox">
+                </label>
 
-            <label class="form-check-label">
+            </div>
 
-                Cipla
+            {% empty %}
 
-            </label>
+            <div class="text-muted">
+                No clients available.
+            </div>
 
-        </div>
-
-        <div class="form-check">
-
-            <input class="form-check-input" type="checkbox">
-
-            <label class="form-check-label">
-
-                Sun Pharma
-
-            </label>
+            {% endfor %}
 
         </div>
 
     </div>
-
 </div>
 
-                Your Prompt
-
-            </label>
+            <!-- Prompt -->
+            <label class="form-label fw-semibold" for="promptInput">Your Prompt</label>
 
             <textarea
                 class="form-control prompt-box"
+                id="promptInput"
+                name="prompt_input"
                 rows="6"
                 placeholder="Example:
 Notify Platinum customers about shipment delay and schedule a review meeting tomorrow at 3 PM."></textarea>
 
             <div class="text-end mt-3">
+                <button class="btn btn-primary" id="generateBtn" type="button">
+                    <i class="bi bi-stars me-2"></i>
+                    Generate
+                </button>
+            </div>
 
-               <button class="btn btn-primary" id="generateBtn">
-    <i class="bi bi-stars me-2"></i>
-    Generate
-</button>
-<div id="loadingSection" class="text-center mt-4" style="display:none;">
-
-    <div class="spinner-border text-primary mb-3"></div>
-
-    <h5>AI is thinking...</h5>
-
-    <p class="text-muted">
-        Generating recipients and email draft...
-    </p>
-
-</div>
-
+            <div id="loadingSection" class="text-center mt-4" style="display:none;">
+                <div class="spinner-border text-primary mb-3"></div>
+                <h5>AI is thinking...</h5>
+                <p class="text-muted">Generating recipients and email draft...</p>
             </div>
 
         </div>
-
     </div>
 
     <!-- Suggested Prompts -->
-
     <div class="card shadow-sm border-0 mb-4">
-
         <div class="card-header bg-white">
-
-            <h5 class="mb-0">
-
-                Suggested Prompts
-
-            </h5>
-
+            <h5 class="mb-0">Suggested Prompts</h5>
         </div>
-
         <div class="card-body">
-
-            <button class="btn suggested-btn">
-                Shipment Delay
-            </button>
-
-            <button class="btn suggested-btn">
-                Festive Discount
-            </button>
-
-            <button class="btn suggested-btn"">
-                Invoice Reminder
-            </button>
-
-            <button class="btn suggested-btn"">
-                Product Launch
-            </button>
-
-           <button class="btn suggested-btn"">
-                Schedule Meeting
-            </button>
-
+            <button class="btn suggested-btn" id="suggestedShipmentDelay" type="button">Shipment Delay</button>
+            <button class="btn suggested-btn" id="suggestedFestiveDiscount" type="button">Festive Discount</button>
+            <button class="btn suggested-btn" id="suggestedInvoiceReminder" type="button">Invoice Reminder</button>
+            <button class="btn suggested-btn" id="suggestedProductLaunch" type="button">Product Launch</button>
+            <button class="btn suggested-btn" id="suggestedScheduleMeeting" type="button">Schedule Meeting</button>
         </div>
-
     </div>
 
     <div id="loadingMessage" class="text-center my-4" style="display:none;">
-
-    <div class="spinner-border text-primary" role="status"></div>
-
-    <p class="mt-3 text-muted">
-        AI is analyzing your request...
-    </p>
-
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-3 text-muted">AI is analyzing your request...</p>
     </div>
+
     <!-- AI Output -->
-
-    <div class="row" id="aiResult">
-    <div class="row" id="aiResult" style="display:none;">
     <div id="resultSection" style="display:none;">
+        <div class="row">
 
-        <!-- Subject -->
-
-        <div class="col-md-12 mb-3">
-
-            <div class="card shadow-sm border-0">
-
-                <div class="card-header bg-white">
-
-                    <h5 class="mb-0">
-                        📨 Subject
-                    </h5>
-
+            <!-- Subject -->
+            <div class="col-md-12 mb-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">📨 Subject</h5>
+                    </div>
+                    <div class="card-body" id="subjectPreview">
+                        Shipment Delay Notification
+                    </div>
                 </div>
+            </div>
 
-                <div class="card-body">
-
-                    Shipment Delay Notification
-
+            <!-- Recipients -->
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">👥 Recipients</h5>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-primary" id="recipientCount">42</h3>
+                        <span id="recipientLabel">Platinum Customers</span>
+                        <hr>
+                        <button class="btn btn-outline-primary btn-sm" id="viewListBtn" type="button">
+                            View List
+                        </button>
+                    </div>
                 </div>
+            </div>
 
+            <!-- Email -->
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Email Preview</h5>
+                    </div>
+                    <div class="card-body" id="emailPreview">
+                        <p>Dear Customer,</p>
+                        <p>
+                            We would like to inform you that your shipment
+                            has been delayed by two days due to logistics
+                            constraints.
+                        </p>
+                        <p>We sincerely apologize for the inconvenience.</p>
+                        <p>Regards,<br>IPCA Team</p>
+                    </div>
+                </div>
             </div>
 
         </div>
 
-        <!-- Recipients -->
-
-        <div class="col-md-4">
-
-            <div class="card shadow-sm border-0">
-
-                <div class="card-header bg-white">
-
-                    <h5 class="mb-0">
-
-                        👥 Recipients
-
-                    </h5>
-
-                </div>
-
-                <div class="card-body">
-
-                    <h3 class="text-primary">
-
-                        42
-
-                    </h3>
-
-                    Platinum Customers
-
-                    <hr>
-
-                    <button class="btn btn-outline-primary btn-sm">
-
-                        View List
-
-                    </button>
-
-                </div>
-
-            </div>
-
+        <!-- Actions -->
+        <div class="ai-heading">
+            <button class="btn btn-success me-2" id="approveSendBtn" type="button">Approve & Send</button>
+            <button class="btn btn-warning me-2" id="editBtn" type="button">Edit</button>
+            <button class="btn btn-secondary" id="regenerateBtn" type="button">Regenerate</button>
         </div>
-
-        <!-- Email -->
-
-        <div class="col-md-8">
-
-            <div class="card shadow-sm border-0">
-
-                <div class="card-header bg-white">
-
-                    <h5 class="mb-0">
-
-                        Email Preview
-
-                    </h5>
-
-                </div>
-
-                <div class="card-body">
-
-                    <p>
-
-                        Dear Customer,
-
-                    </p>
-
-                    <p>
-
-                        We would like to inform you that your shipment
-                        has been delayed by two days due to logistics
-                        constraints.
-
-                    </p>
-
-                    <p>
-
-                        We sincerely apologize for the inconvenience.
-
-                    </p>
-
-                    <p>
-
-                        Regards,
-
-                        <br>
-
-                        IPCA Team
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- Actions -->
-
-    <div class="ai-heading">
-
-        <button class="btn btn-success me-2">
-
-            Approve & Send
-
-        </button>
-
-        <button class="btn btn-warning me-2">
-
-            Edit
-
-        </button>
-
-        <button class="btn btn-secondary">
-
-            Regenerate
-
-        </button>
-
-    </div>
-
     </div>
 
 </div>
+
+<!-- Recipient List Modal -->
+<div class="modal fade" id="recipientListModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Recipient List</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group" id="recipientListItems">
+                    <!-- Populated by JS / backend -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/ai.js' %}"></script>
 
 {% endblock %}

@@ -34,6 +34,8 @@
 
 // });
 
+console.log("AI JS Loaded");
+
 document.addEventListener("DOMContentLoaded", function () {
 
     const button = document.getElementById("generateBtn");
@@ -69,42 +71,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
-
+// ===========================
 // Audience Selection
+// ===========================
 
-const audienceMethod = document.getElementById("audienceMethod");
+document.addEventListener("DOMContentLoaded", function () {
 
-const smartFilters = document.getElementById("smartFilters");
+    const audienceMethod = document.getElementById("audienceMethod");
+    const smartFilters = document.getElementById("smartFiltersSection");
+    const manualSelection = document.getElementById("manualSelectionSection");
 
-const manualSelection = document.getElementById("manualSelection");
+    if (!audienceMethod) return;
 
-const aiPromptSection = document.getElementById("aiPromptSection");
+    function updateAudience() {
 
-if(audienceMethod){
+        if (audienceMethod.value === "smart") {
 
-    function updateAudience(){
+            smartFilters.style.display = "block";
+            manualSelection.style.display = "none";
 
-        smartFilters.style.display="none";
+        } else {
 
-        manualSelection.style.display="none";
-
-        aiPromptSection.style.display="none";
-
-        if(audienceMethod.value==="Smart Filters"){
-
-            smartFilters.style.display="block";
-
-        }
-
-        else if(audienceMethod.value==="Manual Client Selection"){
-
-            manualSelection.style.display="block";
-
-        }
-
-        else{
-
-            aiPromptSection.style.display="block";
+            smartFilters.style.display = "none";
+            manualSelection.style.display = "block";
 
         }
 
@@ -112,6 +101,31 @@ if(audienceMethod){
 
     updateAudience();
 
-    audienceMethod.addEventListener("change",updateAudience);
+    audienceMethod.addEventListener("change", updateAudience);
 
-}
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const search = document.getElementById("clientSearch");
+
+    if (!search) return;
+
+    search.addEventListener("keyup", function () {
+
+        const value = search.value.toLowerCase();
+
+        document.querySelectorAll(".form-check").forEach(item => {
+
+            const text = item.innerText.toLowerCase();
+
+            item.style.display =
+                text.includes(value)
+                ? ""
+                : "none";
+
+        });
+
+    });
+
+});
