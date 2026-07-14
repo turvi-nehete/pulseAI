@@ -1,5 +1,66 @@
 console.log("AI JS Loaded");
 
+// ===========================
+// CSRF Helper (Django)
+// ===========================
+
+
+function getCookie(name) {
+
+    let cookieValue = null;
+
+    if (document.cookie && document.cookie !== "") {
+
+        const cookies = document.cookie.split(";");
+
+        for (let i = 0; i < cookies.length; i++) {
+
+            const cookie = cookies[i].trim();
+
+            if (cookie.substring(0, name.length + 1) === (name + "=")) {
+
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+
+            }
+
+        }
+
+    }
+
+    return cookieValue;
+
+}
+
+// ===========================
+// Global State
+// ===========================
+
+let selectedRecipients = [];
+
+const audienceMethod = document.getElementById("audienceMethod").value;
+
+if (audienceMethod === "manual") {
+
+    selectedRecipients = [];
+
+    document.querySelectorAll(".client-checkbox:checked").forEach(client => {
+
+        selectedRecipients.push({
+            id: client.value,
+            name: client.dataset.name,
+            company: client.dataset.company,
+            email: client.dataset.email
+        });
+
+    });
+
+}
+
+// ===========================
+// Generate Email
+// ===========================
+
 document.addEventListener("DOMContentLoaded", function () {
 
     const button = document.getElementById("generateBtn");
@@ -8,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!button) return;
 
-    button.addEventListener("click", function () {
+    button.addEventListener("click", async function () {
 
         button.disabled = true;
 
@@ -19,7 +80,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
         result.style.display = "none";
 
-        setTimeout(function () {
+        const promptInput = document.getElementById("promptInput");
+        const prompt = promptInput ? promptInput.value.trim() : "";
+
+        if (!prompt) {
+            alert("Please enter a prompt.");
+
+            loading.style.display = "none";
+            button.disabled = false;
+            button.innerHTML =
+                '<i class="bi bi-stars me-2"></i>Generate';
+
+            return;
+        }
+
+        try {
+
+            const csrftoken = getCookie("csrftoken");
+
+            const response = await fetch("/generate-email/", {
+
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                },
+                body: JSON.stringify({ prompt })
+
+            });
+
+            if (!response.ok) {
+                throw new Error("Request failed with status " + response.status);
+            }
+
+            const data = await response.json();
+
+            const subjectPreview = document.getElementById("subjectPreview");
+            const emailPreview = document.getElementById("emailPreview");
+
+            if (subjectPreview) {
+                subjectPreview.value = data.subject;
+            }
+
+            if (emailPreview) {
+                emailPreview.textContent = data.body;
+            }
 
             loading.style.display = "none";
 
@@ -30,11 +135,25 @@ document.addEventListener("DOMContentLoaded", function () {
             button.innerHTML =
                 '<i class="bi bi-stars me-2"></i>Generate';
 
-        }, 2000);
+        } catch (error) {
+
+            console.error("Error generating email:", error);
+
+            alert("Something went wrong while generating the email. Please try again.");
+
+            loading.style.display = "none";
+
+            button.disabled = false;
+
+            button.innerHTML =
+                '<i class="bi bi-stars me-2"></i>Generate';
+
+        }
 
     });
 
 });
+
 // ===========================
 // Audience Selection
 // ===========================
@@ -69,6 +188,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+// ===========================
+// Client Search (Manual Selection)
+// ===========================
+
 document.addEventListener("DOMContentLoaded", function () {
 
     const search = document.getElementById("clientSearch");
@@ -89,6 +212,196 @@ document.addEventListener("DOMContentLoaded", function () {
                 : "none";
 
         });
+
+    });
+
+});
+
+// ===========================
+// Edit Generated Email
+// ===========================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const editBtn = document.getElementById("editBtn");
+    const subjectPreview = document.getElementById("subjectPreview");
+    const emailPreview = document.getElementById("emailPreview");
+
+    if (!editBtn || !subjectPreview || !emailPreview) return;
+
+    editBtn.addEventListener("click", function () {
+
+        subjectPreview.removeAttribute("readonly");
+        emailPreview.removeAttribute("readonly");
+
+        subjectPreview.focus();
+
+        editBtn.innerHTML = '<i class="bi bi-pencil-square me-1"></i>Editing...';
+        editBtn.disabled = true;
+
+    });
+
+});
+
+// ===========================
+// Dynamic Recipient Fetching (Smart Filters)
+// ===========================
+
+function getSmartFilterValues() {
+
+    const customerType = document.getElementById("customerType");
+    const companyType = document.getElementById("companyType");
+    const country = document.getElementById("country");
+    const state = document.getElementById("state");
+    const city = document.getElementById("city");
+
+    return {
+        customer_type: customerType ? customerType.value : "all",
+        company_type: companyType ? companyType.value : "all",
+        country: country ? country.value : "all",
+        state: state ? state.value : "all",
+        city: city ? city.value : "all"
+    };
+
+}
+
+function updateRecipientCard(count, label) {
+    document.getElementById("recipientCount").innerText =
+    selectedRecipients.length;
+
+document.getElementById("recipientLabel").innerText =
+    `${selectedRecipients.length} Clients Selected`;
+
+    const recipientCount = document.getElementById("recipientCount");
+    const recipientLabel = document.getElementById("recipientLabel");
+
+    if (recipientCount) {
+        recipientCount.innerText = count;
+    }
+
+    if (recipientLabel) {
+        recipientLabel.innerText = label;
+    }
+
+}
+
+async function fetchFilteredRecipients() {
+
+    const filters = getSmartFilterValues();
+
+    try {
+
+        const csrftoken = getCookie("csrftoken");
+
+        const response = await fetch("/clients/filter/", {
+
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
+            },
+            body: JSON.stringify(filters)
+
+        });
+
+        if (!response.ok) {
+            throw new Error("Request failed with status " + response.status);
+        }
+
+        const data = await response.json();
+
+        selectedRecipients = data.recipients || [];
+
+        updateRecipientCard(data.count, data.count + " Clients Selected");
+
+    } catch (error) {
+
+        console.error("Error fetching filtered recipients:", error);
+
+    }
+
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const filterIds = [
+        "customerType",
+        "companyType",
+        "country",
+        "state",
+        "city"
+    ];
+
+    filterIds.forEach(function (id) {
+
+        const el = document.getElementById(id);
+
+        if (el) {
+            el.addEventListener("change", fetchFilteredRecipients);
+        }
+
+    });
+
+});
+
+// ===========================
+// View Recipient List (Modal)
+// ===========================
+
+function renderRecipientList() {
+
+    const listEl = document.getElementById("recipientListItems");
+
+    if (!listEl) return;
+
+    listEl.innerHTML = "";
+
+    if (!selectedRecipients.length) {
+
+        const emptyItem = document.createElement("li");
+        emptyItem.className = "list-group-item text-muted";
+        emptyItem.textContent = "No recipients found.";
+        listEl.appendChild(emptyItem);
+
+        return;
+
+    }
+
+    selectedRecipients.forEach(function (recipient) {
+
+        const li = document.createElement("li");
+        li.className = "list-group-item";
+
+        const companyName = recipient.comp_name || recipient.company_name || "";
+        const contactName = recipient.contactname || recipient.contact_name || "";
+        const email = recipient.c_mail || recipient.email || "";
+
+        li.innerHTML =
+            "<strong>" + companyName + "</strong><br>" +
+            "<small class=\"text-muted\">" + contactName + " | " + email + "</small>";
+
+        listEl.appendChild(li);
+
+    });
+
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const viewListBtn = document.getElementById("viewListBtn");
+
+    if (!viewListBtn) return;
+
+    viewListBtn.addEventListener("click", function () {
+
+        renderRecipientList();
+
+        const modalEl = document.getElementById("recipientListModal");
+
+        if (modalEl && window.bootstrap) {
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
 
     });
 

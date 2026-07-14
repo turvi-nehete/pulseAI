@@ -118,3 +118,7 @@ textarea.form-control{
     border-radius:14px;
 
 }
+
+#emailPreview {
+    white-space: pre-wrap;
+}

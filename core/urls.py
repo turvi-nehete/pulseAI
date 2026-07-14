@@ -21,6 +21,7 @@ urlpatterns = [
     path("clients/", client_views.clients,name="clients"),
     path("clients/edit/<int:cid>/",client_views.edit_client,name="edit_client"),
     path("clients/delete/<int:cid>/",client_views.delete_client,name="delete_client",),
+    path("clients/filter/",client_views.get_recipients,name="get_recipients",),
 
     # Gmail
     path("gmail/connect/", gmail_views.connect_gmail),
@@ -29,7 +30,7 @@ urlpatterns = [
 
     # AI
     path("ai_chat/", ai_views.chat,name="ai_chat"),
-    # path("generate-email/", ai_views.generate_email),
+    path("generate-email/", ai_views.generate_email, name="generate_email"),
 
     # Campaign
     path("campaign/create/", campaign_views.create_campaign),

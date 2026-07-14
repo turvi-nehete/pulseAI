@@ -75,3 +75,58 @@ def delete_client(request, cid):
     client.delete()
 
     return redirect("clients")
+
+
+import json
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+
+from core.models import Client
+
+
+@require_POST
+def get_recipients(request):
+
+    data = json.loads(request.body)
+
+    customer_type = data.get("customer_type", "").strip()
+    company_type = data.get("company_type", "").strip()
+    country = data.get("country", "").strip()
+    state = data.get("state", "").strip()
+    city = data.get("city", "").strip()
+
+    clients = Client.objects.filter(
+        uid=request.user,
+        is_active=True
+    )
+
+    if customer_type:
+        clients = clients.filter(customer_type__iexact=customer_type)
+
+    if company_type:
+        clients = clients.filter(comp_type__iexact=company_type)
+
+    if country:
+        clients = clients.filter(country__iexact=country)
+
+    if state:
+        clients = clients.filter(state__iexact=state)
+
+    if city:
+        clients = clients.filter(city__iexact=city)
+
+    recipient_list = []
+
+    for client in clients:
+        recipient_list.append({
+            "id": client.cid,
+            "name": client.contactname,
+            "company": client.comp_name,
+            "email": client.c_mail,
+        })
+
+    return JsonResponse({
+        "count": len(recipient_list),
+        "recipients": recipient_list,
+    })

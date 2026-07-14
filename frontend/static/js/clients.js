@@ -35,8 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     const addButton = document.getElementById("addClientBtn");
-
-addButton.addEventListener("click", function () {
+if(addbutton){
+ addButton.addEventListener("click", function () {
 
     form.reset();
 
@@ -45,6 +45,6 @@ addButton.addEventListener("click", function () {
 
     form.action = "/clients/";
 
-});
+});}
 
 });

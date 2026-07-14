@@ -2,6 +2,8 @@ from django.shortcuts import render
 from core.models import Client
 
 
+
+
 def chat(request):
 
     clients = Client.objects.filter(uid=request.user)
@@ -38,3 +40,20 @@ def chat(request):
         "ai_chat.html",
         context
     )
+import json
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+
+from core.agents import generate_ai_email
+from django.views.decorators.http import require_POST
+
+@require_POST
+def generate_email(request):
+    data = json.loads(request.body)
+
+    prompt = data.get("prompt")
+
+    result = generate_ai_email(prompt)
+
+    return JsonResponse(result)

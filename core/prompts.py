@@ -19,6 +19,14 @@ Email Requirements:
 - Do not invent facts, discounts, dates, or statistics if they are not provided or found via web search.
 - Do not include placeholders such as [Name] unless explicitly requested.
 
+Formatting Requirements:
+- Begin with a professional greeting.
+- Leave one blank line after the greeting.
+- Write the email in 2–4 well-structured paragraphs.
+- Leave one blank line before the closing.
+- End with a professional sign-off.
+- Preserve newline characters in the response.
+
 Output Requirements:
 - Return ONLY a valid JSON object.
 - The JSON object must contain exactly these two keys:

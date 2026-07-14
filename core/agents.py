@@ -5,7 +5,7 @@ from langchain.agents import create_agent
 import json
 
 
-def generate_email(user_prompt):
+def generate_ai_email(user_prompt):
     llm = get_llm()
     tools = get_tools()
 
