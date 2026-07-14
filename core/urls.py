@@ -19,7 +19,8 @@ urlpatterns = [
 
     #clients
     path("clients/", client_views.clients,name="clients"),
-
+    path("clients/edit/<int:cid>/",client_views.edit_client,name="edit_client"),
+    path("clients/delete/<int:cid>/",client_views.delete_client,name="delete_client",),
     # Gmail
     path("gmail/connect/", gmail_views.connect_gmail),
     path("gmail/callback/", gmail_views.gmail_callback),
