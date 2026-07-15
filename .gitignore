@@ -5,6 +5,7 @@ __pycache__/
 
 # Virtual Environment
 venv/
+venv2/         <-- Make sure venv2 is included if it isn't already!
 .env
 
 # Django
@@ -17,3 +18,7 @@ staticfiles/
 # OS
 .DS_Store
 Thumbs.db
+
+# API Secrets / Credentials
+token.json
+credentials.json
