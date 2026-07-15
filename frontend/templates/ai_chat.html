@@ -127,28 +127,20 @@ AI Assistant
 
             {% for client in clients %}
 
-            <div class="form-check mb-2">
+           <div class="form-check">
+    <input
+        class="form-check-input client-checkbox"
+        type="checkbox"
+        value="{{ client.cid }}"
+        data-name="{{ client.contactname }}"
+        data-company="{{ client.comp_name }}"
+        data-email="{{ client.c_mail }}"
+    >
 
-                <input
-                    class="form-check-input client-checkbox"
-                    type="checkbox"
-                    id="client{{ client.cid }}"
-                    name="selected_clients"
-                    value="{{ client.cid }}">
-
-                <label
-                    class="form-check-label"
-                    for="client{{ client.cid }}">
-
-                    <strong>{{ client.comp_name }}</strong><br>
-
-                    <small class="text-muted">
-                        {{ client.contactname }} | {{ client.c_mail }}
-                    </small>
-
-                </label>
-
-            </div>
+    <label class="form-check-label">
+        {{ client.comp_name }} - {{ client.contactname }}
+    </label>
+</div>
 
             {% empty %}
 
@@ -322,20 +314,7 @@ IPCA Team</textarea>
         </div>
     </div>
 </div>
-<div class="form-check">
-    <input
-        class="form-check-input client-checkbox"
-        type="checkbox"
-        value="{{ client.cid }}"
-        data-name="{{ client.contactname }}"
-        data-company="{{ client.comp_name }}"
-        data-email="{{ client.c_mail }}"
-    >
 
-    <label class="form-check-label">
-        {{ client.comp_name }} - {{ client.contactname }}
-    </label>
-</div>
 <script src="{% static 'js/ai.js' %}"></script>
 
 {% endblock %}

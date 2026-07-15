@@ -2,8 +2,6 @@ from django.shortcuts import render
 from core.models import Client
 
 
-
-
 def chat(request):
 
     clients = Client.objects.filter(uid=request.user)
@@ -40,6 +38,8 @@ def chat(request):
         "ai_chat.html",
         context
     )
+
+
 import json
 
 from django.http import JsonResponse

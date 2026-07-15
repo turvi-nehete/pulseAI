@@ -97,9 +97,15 @@ def get_recipients(request):
     city = data.get("city", "").strip()
 
     clients = Client.objects.filter(
-        uid=request.user,
-        is_active=True
+    uid=request.user
     )
+
+    status = data.get("status", "").strip().lower()
+
+    if status == "active":
+        clients = clients.filter(is_active=True)
+    elif status == "inactive":
+        clients = clients.filter(is_active=False)
 
     if customer_type:
         clients = clients.filter(customer_type__iexact=customer_type)

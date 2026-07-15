@@ -4,7 +4,6 @@ console.log("AI JS Loaded");
 // CSRF Helper (Django)
 // ===========================
 
-
 function getCookie(name) {
 
     let cookieValue = null;
@@ -37,25 +36,6 @@ function getCookie(name) {
 // ===========================
 
 let selectedRecipients = [];
-
-const audienceMethod = document.getElementById("audienceMethod").value;
-
-if (audienceMethod === "manual") {
-
-    selectedRecipients = [];
-
-    document.querySelectorAll(".client-checkbox:checked").forEach(client => {
-
-        selectedRecipients.push({
-            id: client.value,
-            name: client.dataset.name,
-            company: client.dataset.company,
-            email: client.dataset.email
-        });
-
-    });
-
-}
 
 // ===========================
 // Generate Email
@@ -244,33 +224,11 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // ===========================
-// Dynamic Recipient Fetching (Smart Filters)
+// Recipient Card Helper
+// (shared by Smart Filters + Manual Selection)
 // ===========================
 
-function getSmartFilterValues() {
-
-    const customerType = document.getElementById("customerType");
-    const companyType = document.getElementById("companyType");
-    const country = document.getElementById("country");
-    const state = document.getElementById("state");
-    const city = document.getElementById("city");
-
-    return {
-        customer_type: customerType ? customerType.value : "all",
-        company_type: companyType ? companyType.value : "all",
-        country: country ? country.value : "all",
-        state: state ? state.value : "all",
-        city: city ? city.value : "all"
-    };
-
-}
-
 function updateRecipientCard(count, label) {
-    document.getElementById("recipientCount").innerText =
-    selectedRecipients.length;
-
-document.getElementById("recipientLabel").innerText =
-    `${selectedRecipients.length} Clients Selected`;
 
     const recipientCount = document.getElementById("recipientCount");
     const recipientLabel = document.getElementById("recipientLabel");
@@ -282,6 +240,52 @@ document.getElementById("recipientLabel").innerText =
     if (recipientLabel) {
         recipientLabel.innerText = label;
     }
+
+}
+
+// ===========================
+// Dynamic Recipient Fetching (Smart Filters)
+// ===========================
+
+function getSmartFilterValues() {
+
+    const customerType = document.getElementById("customerType");
+    const companyType = document.getElementById("companyType");
+    const country = document.getElementById("country");
+    const state = document.getElementById("state");
+    const city = document.getElementById("city");
+    const status = document.getElementById("status")
+
+    return {
+        customer_type:
+            customerType && customerType.value.toLowerCase() !== "all"
+                ? customerType.value
+                : "",
+
+        company_type:
+            companyType && companyType.value.toLowerCase() !== "all"
+                ? companyType.value
+                : "",
+
+        country:
+            country && country.value.toLowerCase() !== "all"
+                ? country.value
+                : "",
+
+        state:
+            state && state.value.toLowerCase() !== "all"
+                ? state.value
+                : "",
+
+        city:
+            city && city.value.toLowerCase() !== "all"
+                ? city.value
+                : "",
+        status:
+            status && status.value.toLowerCase() !== "all"
+                ? status.value
+                : ""
+    };
 
 }
 
@@ -329,7 +333,8 @@ document.addEventListener("DOMContentLoaded", function () {
         "companyType",
         "country",
         "state",
-        "city"
+        "city",
+        "status"
     ];
 
     filterIds.forEach(function (id) {
@@ -338,6 +343,94 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (el) {
             el.addEventListener("change", fetchFilteredRecipients);
+        }
+
+    });
+
+});
+
+// ===========================
+// Manual Client Selection
+// ===========================
+
+// Enriches server-rendered checkboxes with data-name / data-company / data-email
+// (read once from the existing label markup, no HTML redesign needed).
+function enrichClientCheckboxes() {
+
+    document.querySelectorAll(".client-checkbox").forEach(function (checkbox) {
+
+        // Skip if already enriched
+        if (checkbox.dataset.company && checkbox.dataset.email) {
+            return;
+        }
+
+        const label = document.querySelector('label[for="' + checkbox.id + '"]');
+
+        if (!label) return;
+
+        const companyEl = label.querySelector("strong");
+        const detailsEl = label.querySelector("small");
+
+        const company = companyEl ? companyEl.textContent.trim() : "";
+
+        let contactName = "";
+        let email = "";
+
+        if (detailsEl) {
+
+            const parts = detailsEl.textContent.split("|");
+
+            contactName = parts[0] ? parts[0].trim() : "";
+            email = parts[1] ? parts[1].trim() : "";
+
+        }
+
+        checkbox.dataset.name = contactName;
+        checkbox.dataset.company = company;
+        checkbox.dataset.email = email;
+
+    });
+
+}
+
+// Rebuilds selectedRecipients from every checked manual checkbox.
+function updateManualSelection() {
+
+    selectedRecipients = [];
+
+    document.querySelectorAll(".client-checkbox:checked").forEach(function (checkbox) {
+
+        selectedRecipients.push({
+            id: checkbox.value,
+            name: checkbox.dataset.name || "",
+            company: checkbox.dataset.company || "",
+            email: checkbox.dataset.email || ""
+        });
+
+    });
+
+    updateRecipientCard(
+        selectedRecipients.length,
+        selectedRecipients.length + " Clients Selected"
+    );
+
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    enrichClientCheckboxes();
+
+    const clientListContainer =
+        document.getElementById("clientList") ||
+        document.getElementById("manualSelectionSection");
+
+    if (!clientListContainer) return;
+
+    // Event delegation: one listener handles all current and future checkboxes
+    clientListContainer.addEventListener("change", function (event) {
+
+        if (event.target && event.target.classList.contains("client-checkbox")) {
+            updateManualSelection();
         }
 
     });
@@ -372,9 +465,14 @@ function renderRecipientList() {
         const li = document.createElement("li");
         li.className = "list-group-item";
 
-        const companyName = recipient.comp_name || recipient.company_name || "";
-        const contactName = recipient.contactname || recipient.contact_name || "";
-        const email = recipient.c_mail || recipient.email || "";
+        const companyName =
+            recipient.comp_name || recipient.company_name || recipient.company || "";
+
+        const contactName =
+            recipient.contactname || recipient.contact_name || recipient.name || "";
+
+        const email =
+            recipient.c_mail || recipient.email || "";
 
         li.innerHTML =
             "<strong>" + companyName + "</strong><br>" +
